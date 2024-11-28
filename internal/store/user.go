@@ -18,6 +18,7 @@ type UserStore struct {
 }
 
 func (s *UserStore) Create(ctx context.Context, user *User) error {
+
 	query := `INSET INTO users (username, email, password) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
 
 	err := s.db.QueryRowContext(ctx, query, user.Username, user.Email, user.Password).Scan(&user.ID, &user.CreatedAt)

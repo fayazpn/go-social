@@ -33,6 +33,7 @@ func (app *application) mount() http.Handler {
 
 	// for logging
 	r.Use(middleware.Logger)
+
 	// for recovering from panicks
 	r.Use(middleware.Recoverer)
 

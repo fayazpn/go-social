@@ -32,7 +32,10 @@ func main() {
 
 	store := store.NewStorage(db)
 
-	app := &application{config: cfg, store: store}
+	app := &application{
+		config: cfg,
+		store:  store,
+	}
 	mux := app.mount()
 
 	log.Fatal(app.run(mux))
