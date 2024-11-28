@@ -1,0 +1,3 @@
+ALTER TABLE comments
+  DROP CONSTRAINT fk_user,
+  DROP CONSTRAINT fk_post;
