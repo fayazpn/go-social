@@ -19,7 +19,7 @@ type UserStore struct {
 
 func (s *UserStore) Create(ctx context.Context, user *User) error {
 
-	query := `INSET INTO users (username, email, password) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
+	query := `INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, created_at`
 
 	ctx, cancel := context.WithTimeout(ctx, QueryContextTimeout)
 	defer cancel()
