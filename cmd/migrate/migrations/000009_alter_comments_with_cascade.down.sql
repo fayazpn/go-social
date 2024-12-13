@@ -1,0 +1,9 @@
+ALTER TABLE comments
+DROP CONSTRAINT fk_user,
+ADD CONSTRAINT fk_user
+FOREIGN KEY (user_id)
+REFERENCES users(id),
+DROP CONSTRAINT fk_post,
+ADD CONSTRAINT fk_post
+FOREIGN KEY (post_id)
+REFERENCES posts(id);
