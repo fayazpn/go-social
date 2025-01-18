@@ -8,7 +8,7 @@ func (app *application) handleCheckHandler(w http.ResponseWriter, r *http.Reques
 		"env":     app.config.env,
 		"version": version,
 	}
-	if err := app.writeResponse(w, data); err != nil {
+	if err := app.writeResponse(w, http.StatusOK, data); err != nil {
 		app.internalServerError(w, r, err)
 	}
 }

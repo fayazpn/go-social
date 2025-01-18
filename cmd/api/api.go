@@ -44,6 +44,7 @@ func (app *application) mount() http.Handler {
 
 			r.Route("/{postID}", func(r chi.Router) {
 				r.Use(app.postsContextMiddleware)
+
 				r.Get("/", app.getPostHandler)
 				r.Patch("/", app.updatePostHandler)
 				r.Delete("/", app.deletePostHandler)
@@ -51,7 +52,11 @@ func (app *application) mount() http.Handler {
 		})
 		r.Route("/user", func(r chi.Router) {
 			r.Route("/{userID}", func(r chi.Router) {
+				r.Use(app.userContextMiddleware)
+
 				r.Get("/", app.getUserHandler)
+				r.Put("/follow", app.followUserHandler)
+				r.Put("/unfollow", app.unfollowUserHandler)
 			})
 		})
 	})
@@ -60,7 +65,6 @@ func (app *application) mount() http.Handler {
 }
 
 func (app *application) run(mux http.Handler) error {
-
 	srv := &http.Server{
 		Addr:         app.config.addr,
 		Handler:      mux,

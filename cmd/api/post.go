@@ -49,11 +49,10 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if err := app.writeResponse(w, *post); err != nil {
+	if err := app.writeResponse(w, http.StatusOK, *post); err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
-
 }
 
 func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +63,6 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	comments, err := app.store.Comments.GetByPostID(r.Context(), post.ID)
-
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
@@ -72,11 +70,10 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	post.Comments = comments
 
-	if err := app.writeResponse(w, *post); err != nil {
+	if err := app.writeResponse(w, http.StatusOK, *post); err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
-
 }
 
 type UpdatePostPayload struct {
@@ -121,7 +118,7 @@ func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request
 		}
 	}
 
-	if err := app.writeResponse(w, post); err != nil {
+	if err := app.writeResponse(w, http.StatusOK, post); err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
@@ -149,7 +146,6 @@ func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (app *application) postsContextMiddleware(next http.Handler) http.Handler {
-
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
 			params := chi.URLParam(r, "postID")
@@ -162,7 +158,6 @@ func (app *application) postsContextMiddleware(next http.Handler) http.Handler {
 			ctx := r.Context()
 
 			post, err := app.store.Posts.Get(ctx, int64(id))
-
 			if err != nil {
 				switch {
 				case errors.Is(err, store.ErrNotFound):

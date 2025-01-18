@@ -21,8 +21,12 @@ func main() {
 		env: env.GetString("ENV", "development"),
 	}
 
-	db, err := db.New(cfg.db.addr, cfg.db.maxOpenConns, cfg.db.maxIdleConns, cfg.db.maxIdleTime)
-
+	db, err := db.New(
+		cfg.db.addr,
+		cfg.db.maxOpenConns,
+		cfg.db.maxIdleConns,
+		cfg.db.maxIdleTime,
+	)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -39,5 +43,4 @@ func main() {
 	mux := app.mount()
 
 	log.Fatal(app.run(mux))
-
 }
