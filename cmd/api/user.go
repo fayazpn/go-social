@@ -57,7 +57,6 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 	if err := app.writeResponse(w, http.StatusNoContent, nil); err != nil {
 		app.internalServerError(w, r, err)
 	}
-
 }
 
 func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +88,6 @@ func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (app *application) userContextMiddleware(next http.Handler) http.Handler {
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		params := chi.URLParam(r, "userID")
 		id, err := strconv.ParseInt(params, 10, 64)
