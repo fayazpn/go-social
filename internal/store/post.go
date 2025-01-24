@@ -17,7 +17,13 @@ type Post struct {
 	CreatedAt string    `json:"created_at"`
 	UpdatedAt string    `json:"updated_at"`
 	Comments  []Comment `json:"comments"`
+	User      User      `json:"user"`
 	Version   int64     `json:"version"`
+}
+
+type PostWithMetadata struct {
+	Post
+	CommentCount int `json:"comments_count"`
 }
 
 type PostStore struct {
@@ -40,7 +46,6 @@ func (s *PostStore) Create(ctx context.Context, post *Post) error {
 		post.Title,
 		post.UserID,
 		pq.Array(post.Tags)).Scan(&post.ID, &post.CreatedAt, &post.UpdatedAt)
-
 	if err != nil {
 		return err
 	}
@@ -68,7 +73,6 @@ func (s *PostStore) Get(ctx context.Context, id int64) (*Post, error) {
 		&post.UpdatedAt,
 		&post.Version,
 	)
-
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):
@@ -78,7 +82,6 @@ func (s *PostStore) Get(ctx context.Context, id int64) (*Post, error) {
 	}
 
 	return post, nil
-
 }
 
 func (s *PostStore) Update(ctx context.Context, post *Post) error {
@@ -101,7 +104,6 @@ func (s *PostStore) Update(ctx context.Context, post *Post) error {
 	}
 
 	return nil
-
 }
 
 func (s *PostStore) Delete(ctx context.Context, post *Post) error {
@@ -111,10 +113,13 @@ func (s *PostStore) Delete(ctx context.Context, post *Post) error {
 	ctx, cancel := context.WithTimeout(ctx, QueryContextTimeout)
 	defer cancel()
 	_, err := s.db.ExecContext(ctx, query, post.ID)
-
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (s *PostStore) GetUserFeed(ctx context.Context, userID int64) ([]*PostWithMetadata, error) {
+	return nil, nil
 }
