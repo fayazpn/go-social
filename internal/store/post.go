@@ -121,5 +121,6 @@ func (s *PostStore) Delete(ctx context.Context, post *Post) error {
 }
 
 func (s *PostStore) GetUserFeed(ctx context.Context, userID int64) ([]*PostWithMetadata, error) {
+	query := ``
 	return nil, nil
 }
